@@ -109,6 +109,12 @@ export const statusToHTML = (status: WeiboStatus) => {
   // 去掉外链图标
   tempHTML = tempHTML.replace(/<span class='url-icon'><img.*?><\/span>/g, '');
 
+  // 替换转发微博中的图片链接
+  tempHTML = tempHTML.replace(/href="https:\/\/weibo\.cn\/sinaurl\?u=([^"]+)"/g, (match, p1) => {
+    const cachedUrl = config.imageCache ? config.imageCache + p1 : p1;
+    return `href="${cachedUrl}"`;
+  });
+
   // 转发的微博
   if (status.retweeted_status) {
     tempHTML += "<br><br>";
@@ -127,7 +133,7 @@ export const statusToHTML = (status: WeiboStatus) => {
       tempHTML += "<br><br>";
       const url = config.imageCache ? (config.imageCache + encodeURIComponent(item.url)) : item.url;
       const largeUrl = config.imageCache ? (config.imageCache + encodeURIComponent(item.large.url)) : item.large.url;
-      tempHTML += '<a href="' + largeUrl + '" target="_blank"><img src="' + url+ '"></a>';
+      tempHTML += '<a href="' + largeUrl + '" target="_blank"><img src="' + largeUrl + '"></a>';
     });
   }
 
