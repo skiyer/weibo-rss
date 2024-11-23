@@ -2,8 +2,10 @@
   "apps": [
     {
       "name": "weibo-rss",
-      "script": "node ./dist/app.js",
-      "watch": true,
+      "script": "./dist/app.js",
+      "watch": false,
+      "interpreter": "/root/.local/share/fnm/fnm",
+      "interpreter_args": "exec --using=22 node",
       "env": {
         "PORT": "3000"
       }
